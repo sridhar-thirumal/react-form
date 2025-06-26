@@ -1,4 +1,13 @@
-function InputField(props) {
+type MyPropsField = {
+  id: "string";
+  name: "string";
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value: "string";
+  valid: "boolean";
+  message: "string"
+};
+
+function InputField(props: MyPropsField) {
     return(
         <div className='flex flex-col gap-y-1 sm:grid sm:grid-cols-[10rem_12rem_2rem]'>
           <label htmlFor={props.id}>{props.name}: </label>

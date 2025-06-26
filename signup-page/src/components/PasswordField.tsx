@@ -1,4 +1,15 @@
-function PasswordField(props) {
+type MyPropsField = {
+  id: "string";
+  name: "string";
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  toggle: () => void;
+  value: "string";
+  type: "text" | "password";
+  valid: "boolean";
+  message: "string"
+};
+
+function PasswordField(props: MyPropsField) {
     return (
         <div className='flex flex-col gap-y-1 sm:grid sm:grid-cols-[10rem_12rem_2rem]'>
           <label htmlFor={props.id}>{props.name}: </label>
