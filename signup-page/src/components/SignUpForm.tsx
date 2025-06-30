@@ -1,102 +1,11 @@
-import { use, useState } from 'react'
 import { useNavigate } from 'react-router';
 import InputField from './InputField';
 import PasswordField from './PasswordField';
+import useField from '../hooks/useField';
 
 function SignUpForm() {
-  type fieldState = {
-    value: string;
-    valid: boolean;
-    message: string;
-    type?: "text" | "password";
-  };
-  type validatorFn = (value: string, allFields?: Record<string, fieldState>) => Partial<fieldState>;
 
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const nav = useNavigate();
-
-  const validators: Record<string, validatorFn> = {
-    fname: (val) => {
-      if(!val)
-        return {valid: false, message: "!Required"};
-      else if(val.length > 25)
-        return {valid: false, message: "!Name too long"};
-      else
-        return {valid: true, message: ""};
-    },
-    lname: (val) => {
-      if(!val)
-        return {valid: false, message: "!Required"};
-      else if(val.length > 25)
-        return {valid: false, message: "!Name too long"};
-      else
-        return {valid: true, message: ""};
-    },
-    email: (val) => {
-      if(!val)
-        return {valid: false, message: "!Required"};
-      else if(emailRegex.test(val))
-        return {valid: true, message: ""};
-      else
-        return {valid: false, message: "!Invalid Email"};
-    },
-    age: (val) => {
-      if(!val)
-        return {valid: false, message: "!Required"};
-      const a = parseInt(val);
-      if(isNaN(a))
-        return {valid: false, message: "!Enter number"};
-      else if(a < 18)
-        return {valid: false, message: "!Atleast 18 required"};
-      else
-        return {valid: true, message: ""};
-    },
-    passw: (val) => {
-      if(!val)
-        return {valid: false, message: "!Required"};
-      else if(val.length >= 8 || /[A-Z]/.test(val))
-        return {valid: true, message: ""};
-      else
-        return {valid: false, message: "!Invalid Password"};
-    },
-    cpassw: (val) => {
-      if(!val)
-        return {valid: false, message: "!Required"};
-      else if(val === fields.passw.value)
-        return {valid: true, message: ""};
-      else
-        return {valid: false, message: "!Passwords dont match"};
-    },
-  };
-
-  //in useField custom hook
-  function useField(name: string, inititalType?: "password" | "text") {
-    const [field, setField] = useState({
-      value: "",
-      valid: true,
-      message: "",
-      type: inititalType,
-    });
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newVal = e.target.value;
-      const validator = validators[name];
-      const result = validator(newVal);
-      setField({
-        ...field,
-        value: newVal,
-        ...result,
-      });
-    };
-
-    const toggleType = () => {
-      if(!field.type) return;
-      setField({
-        ...field,
-        type: field.type === "password" ? "type": "password",
-      });
-    };
-    return {...field, onChange, toggleType};
-  }
 
   const fields = {
     fname: useField("fname"),
@@ -106,6 +15,16 @@ function SignUpForm() {
     passw: useField("passw", "password"),
     cpassw: useField("cpassw", "password"),
   };
+
+  function cpasswOnchange(e: React.ChangeEvent<HTMLInputElement>) {
+    let val: string = e.target.value;
+    if(!val)
+      fields.cpassw.setField({...fields.cpassw, value: val, valid: false, message: "!Required"});
+    else if(val === fields.passw.value)
+      fields.cpassw.setField({...fields.cpassw, value: val, valid: true, message: ""});
+    else
+      fields.cpassw.setField({...fields.cpassw, value: val, valid: false, message: "!Passwords dont match"});
+  }
 
   const submitHandle = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -127,7 +46,7 @@ function SignUpForm() {
         <PasswordField id="passw" onChange={fields.passw.onChange} value={fields.passw.value}
         valid={fields.passw.valid} message={fields.passw.message} toggle={fields.passw.toggleType}
         type={fields.passw.type} name="Password"/>
-        <PasswordField id="cpassw" onChange={fields.cpassw.onChange} value={fields.cpassw.value}
+        <PasswordField id="cpassw" onChange={cpasswOnchange} value={fields.cpassw.value}
         valid={fields.cpassw.valid} message={fields.cpassw.message} toggle={fields.cpassw.toggleType}
         type={fields.cpassw.type} name="Confirm Password"/>
         <div className='flex flex-row justify-center pb-2'>
