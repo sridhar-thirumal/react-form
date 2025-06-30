@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+body {
+    @apply bg-[url(assets/background.jpeg)] bg-cover bg-center min-h-screen
+}
