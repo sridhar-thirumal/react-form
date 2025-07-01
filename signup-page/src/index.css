@@ -1,5 +1,26 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 body {
-    @apply bg-[url(assets/background.jpeg)] bg-cover bg-center min-h-screen
+  @apply bg-[url(assets/background.jpeg)] bg-cover bg-center min-h-screen;
+}
+
+@theme {
+  --color-error: #fc0303;
+}
+
+.input-base {
+  @apply border p-2 rounded max-w-[12rem] border-black;
+}
+
+.field-base {
+  @apply flex flex-col gap-y-1 sm:grid sm:grid-cols-[10rem_12rem_2rem];
+}
+
+.message-base {
+  @apply text-error text-sm sm:col-start-2;
+}
+
+.form-base {
+  @apply flex flex-col bg-white absolute top-1/2 
+    left-1/2 -translate-x-1/2 -translate-y-1/2 gap-y-2 p-5 pt-7 rounded-lg;
 }
