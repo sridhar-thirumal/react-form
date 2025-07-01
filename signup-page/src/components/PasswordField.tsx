@@ -11,10 +11,10 @@ type PasswordFieldProps = {
 
 function PasswordField({id, name, type, onChange, value, toggle, valid, message}: PasswordFieldProps) {
     return (
-        <div className='flex flex-col gap-y-1 sm:grid sm:grid-cols-[10rem_12rem_2rem]'>
+        <div className='field-base'>
           <label htmlFor={id}>{name}: </label>
           <div className='flex flex-row'>
-            <input id={id} type={type} className='border-1 border-black max-w-[12rem]' required
+            <input id={id} type={type} className='input-base' required
             onChange={onChange} value={value}/>
             <button type="button" onClick={toggle} className='ml-2 sm:ml-2'>
               {type === "password" ? 
@@ -27,7 +27,7 @@ function PasswordField({id, name, type, onChange, value, toggle, valid, message}
                 <circle cx="12" cy="12" r="3"/></svg>}
             </button>
             </div>
-          {!valid && <p className='text-[#fc0303] text-sm sm:col-start-2'>{message}</p>}
+          {!valid && <p className='message-base'>{message}</p>}
         </div>
     );
 }

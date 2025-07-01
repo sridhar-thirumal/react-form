@@ -33,8 +33,7 @@ function SignUpForm() {
   };
 
   return (
-    <form className='flex flex-col bg-white absolute top-1/2 
-    left-1/2 -translate-x-1/2 -translate-y-1/2 gap-y-2 p-5 pt-7' onSubmit={submitHandle}>
+    <form className='form-base' onSubmit={submitHandle}>
         <InputField id="fname" onChange={fields.fname.onChange} value={fields.fname.value}
         valid={fields.fname.valid} message={fields.fname.message} name="First Name"/>
         <InputField id="lname" onChange={fields.lname.onChange} value={fields.lname.value}
